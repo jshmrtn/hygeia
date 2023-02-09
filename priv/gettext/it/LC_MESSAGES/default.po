@@ -86,11 +86,6 @@ msgid "A phase will be appended."
 msgstr "Una fase sarà allegata."
 
 #, elixir-autogen, icu-format
-msgctxt "Versioning Origin"
-msgid "API"
-msgstr "API"
-
-#, elixir-autogen, icu-format
 msgid "Accept"
 msgstr "Accetta"
 
@@ -156,13 +151,13 @@ msgid "Add the mobile number or e-mail address to the person data."
 msgstr "Aggiungi il numero di cellulare o l'indirizzo e-mail ai dati della persona."
 
 #, elixir-autogen, icu-format
+msgid "Additional actions:"
+msgstr "Azioni aggiuntive:"
+
+#, elixir-autogen, icu-format
 msgctxt "Phase Create Modal"
 msgid "Additional Changes"
 msgstr "Modifiche aggiuntive"
-
-#, elixir-autogen, icu-format
-msgid "Additional actions:"
-msgstr "Azioni aggiuntive:"
 
 #, elixir-autogen, icu-format
 msgid "Additional inquiries"
@@ -246,6 +241,11 @@ msgid "Affiliations"
 msgstr "Affiliazioni"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "affiliations"
+msgstr "affiliazioni"
+
+#, elixir-autogen, icu-format
 msgid "Agreed with index that had been in contact that no further contact is necessary"
 msgstr "Concordato con l'indice che era stato in contatto che non è necessario un ulteriore contatto"
 
@@ -260,6 +260,10 @@ msgstr "Aereo o viaggio"
 #, elixir-autogen, icu-format
 msgid "All points must be fulfilled"
 msgstr "Tutti i punti devono essere soddisfatti"
+
+#, elixir-autogen, icu-format
+msgid "all subdivisions"
+msgstr "tutte le suddivisioni"
 
 #, elixir-autogen, icu-format
 msgid "Allow"
@@ -282,6 +286,11 @@ msgstr "Si è verificato un errore imprevisto durante la reidentificazione del c
 #, elixir-autogen, icu-format
 msgid "An unknown error happened during registration. Report this to your webmaster."
 msgstr "Si è verificato un errore sconosciuto durante la registrazione. Segnalalo al tuo webmaster."
+
+#, elixir-autogen, icu-format
+msgctxt "Notification Tray"
+msgid "and {count} more"
+msgstr "e {count} in più"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Base Data"
@@ -317,6 +326,10 @@ msgid "Anonymized person will be reidentified"
 msgstr "La persona redatta verrà reidentificata"
 
 #, elixir-autogen, icu-format
+msgid "another place"
+msgstr "un altro posto"
+
+#, elixir-autogen, icu-format
 msgctxt "Test Kind"
 msgid "Antibody"
 msgstr "Anticorpo"
@@ -331,9 +344,18 @@ msgid "Any"
 msgstr "Qualsiasi"
 
 #, elixir-autogen, icu-format
+msgctxt "Versioning Origin"
+msgid "API"
+msgstr "API"
+
+#, elixir-autogen, icu-format
 msgctxt "Test Reason"
 msgid "App report"
 msgstr "Rapporto dell'applicazione"
+
+#, elixir-autogen, icu-format
+msgid "Append new Test"
+msgstr "Aggiungi un nuovo test"
 
 #, elixir-autogen, icu-format
 msgid "Append Note"
@@ -342,10 +364,6 @@ msgstr "Aggiungi una nota"
 #, elixir-autogen, icu-format
 msgid "Append Phase"
 msgstr "Appendi fase"
-
-#, elixir-autogen, icu-format
-msgid "Append new Test"
-msgstr "Aggiungi un nuovo test"
 
 #, elixir-autogen, icu-format
 msgid "Apply"
@@ -476,12 +494,17 @@ msgid "Auto Tracing"
 msgstr "Tracciamento automatico"
 
 #, elixir-autogen, icu-format
+msgid "Auto Tracing active"
+msgstr "Tracciamento automatico"
+
+#, elixir-autogen, icu-format
 msgid "Auto Tracing Problem"
 msgstr "Problema di tracciamento automatico"
 
 #, elixir-autogen, icu-format
-msgid "Auto Tracing active"
-msgstr "Tracciamento automatico"
+msgctxt "Item Table"
+msgid "auto_tracings"
+msgstr "tracciamenti_automatici"
 
 #, elixir-autogen, icu-format
 msgctxt "Versioning Origin"
@@ -498,6 +521,18 @@ msgid "Automated close email sent"
 msgstr "Email di chiusura automatica inviata"
 
 #, elixir-autogen, icu-format
+msgid "Back"
+msgstr "Indietro"
+
+#, elixir-autogen, icu-format
+msgid "Back to List"
+msgstr "Torna alla lista"
+
+#, elixir-autogen, icu-format
+msgid "Back to list"
+msgstr "Torna alla lista"
+
+#, elixir-autogen, icu-format
 msgid "BAG MED 16122020 (Case)"
 msgstr "BORSA MED 16122020 (Caso)"
 
@@ -512,18 +547,6 @@ msgstr "BORSA MED 16122020 (Contatto)"
 #, elixir-autogen, icu-format
 msgid "BAG MED 16122020 (Contact; Hygeia Extended Fields)"
 msgstr "BAG MED 16122020 (Contatto; Hygeia Campi Estesi)"
-
-#, elixir-autogen, icu-format
-msgid "Back"
-msgstr "Indietro"
-
-#, elixir-autogen, icu-format
-msgid "Back to List"
-msgstr "Torna alla lista"
-
-#, elixir-autogen, icu-format
-msgid "Back to list"
-msgstr "Torna alla lista"
 
 #, elixir-autogen, icu-format
 msgid "Base Data"
@@ -615,9 +638,21 @@ msgid "Case Administration"
 msgstr "Amministrazione dei casi"
 
 #, elixir-autogen, icu-format
+msgid "Case anonymized successfully"
+msgstr "Il caso è stato reso anonimo con successo"
+
+#, elixir-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Case Assignee Changed"
 msgstr "L'assegnatario del caso è stato cambiato"
+
+#, elixir-autogen, icu-format
+msgid "Case created successfully"
+msgstr "Il caso è stato creato con successo"
+
+#, elixir-autogen, icu-format
+msgid "Case deleted successfully"
+msgstr "Il caso è stato cancellato con successo"
 
 #, elixir-autogen, icu-format
 msgctxt "Breakthrough Infection Export"
@@ -639,23 +674,6 @@ msgid "Case Phase Type must be unique"
 msgstr "Il tipo di fase del caso deve essere unico"
 
 #, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
-msgid "Case UUID"
-msgstr "UUID del caso"
-
-#, elixir-autogen, icu-format
-msgid "Case anonymized successfully"
-msgstr "Il caso è stato reso anonimo con successo"
-
-#, elixir-autogen, icu-format
-msgid "Case created successfully"
-msgstr "Il caso è stato creato con successo"
-
-#, elixir-autogen, icu-format
-msgid "Case deleted successfully"
-msgstr "Il caso è stato cancellato con successo"
-
-#, elixir-autogen, icu-format
 msgctxt "Case Base Data"
 msgid "Case reidentified successfully"
 msgstr "Caso reidentificato con successo"
@@ -665,6 +683,11 @@ msgid "Case updated successfully"
 msgstr "Caso aggiornato con successo"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
+msgid "Case UUID"
+msgstr "UUID del caso"
+
+#, elixir-autogen, icu-format
 msgctxt "Inbox Row Apply Person"
 msgid "Case:"
 msgstr "Caso:"
@@ -672,6 +695,11 @@ msgstr "Caso:"
 #, elixir-autogen, icu-format
 msgid "Cases"
 msgstr "Casi"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "cases"
+msgstr "casi"
 
 #, elixir-autogen, icu-format
 msgid "Cases inserted successfully."
@@ -731,21 +759,8 @@ msgid "Choir, Choral Society, Orchstra"
 msgstr "Coro, gruppo corale, orchstra"
 
 #, elixir-autogen, icu-format
-msgctxt "Affiliation"
-msgid "Choose Kind"
-msgstr "Scegliere il tipo"
-
-#, elixir-autogen, icu-format
-msgid "Choose Sex"
-msgstr "Scegliere il sesso"
-
-#, elixir-autogen, icu-format
-msgid "Choose Tenant"
-msgstr "Scegli l'inquilino"
-
-#, elixir-autogen, icu-format
-msgid "Choose Type"
-msgstr "Scegliere il tipo"
+msgid "choose"
+msgstr "scegliere"
 
 #, elixir-autogen, icu-format
 msgid "Choose case"
@@ -766,6 +781,11 @@ msgstr "Scegliere la persona esistente"
 #, elixir-autogen, icu-format
 msgid "Choose file"
 msgstr "Scegliere il file"
+
+#, elixir-autogen, icu-format
+msgctxt "Affiliation"
+msgid "Choose Kind"
+msgstr "Scegliere il tipo"
 
 #, elixir-autogen, icu-format
 msgid "Choose location"
@@ -798,8 +818,16 @@ msgid "Choose reason"
 msgstr "Scegliere la persona"
 
 #, elixir-autogen, icu-format
+msgid "Choose Sex"
+msgstr "Scegliere il sesso"
+
+#, elixir-autogen, icu-format
 msgid "Choose subdivision"
 msgstr "Scegliere la suddivisione"
+
+#, elixir-autogen, icu-format
+msgid "Choose Tenant"
+msgstr "Scegli l'inquilino"
 
 #, elixir-autogen, icu-format
 msgid "Choose test kind"
@@ -808,6 +836,10 @@ msgstr "Scegliere il tipo di test"
 #, elixir-autogen, icu-format
 msgid "Choose test result"
 msgstr "Scegliere il risultato del test"
+
+#, elixir-autogen, icu-format
+msgid "Choose Type"
+msgstr "Scegliere il tipo"
 
 #, elixir-autogen, icu-format
 msgid "Choose vaccine"
@@ -935,6 +967,14 @@ msgid "Confirmation PDF Template"
 msgstr "Modello PDF di conferma"
 
 #, elixir-autogen, icu-format
+msgid "Contact between {date} and now. (48 hours before symptom start)"
+msgstr "Contatto tra {date} e ora. (48 ore prima dell'inizio dei sintomi)"
+
+#, elixir-autogen, icu-format
+msgid "Contact between {date} and now. (48 hours before the first positive test)"
+msgstr "Contatto tra {date} e ora. (48 ore prima del primo test positivo)"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Contact Email"
 msgstr "Rintracciamento dei contatti"
@@ -968,31 +1008,23 @@ msgid "Contact Persons"
 msgstr "Persona di contatto"
 
 #, elixir-autogen, icu-format
+msgid "Contact persons"
+msgstr "Persone di contatto"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
 msgid "Contact Phone"
 msgstr "Persona di contatto"
 
 #, elixir-autogen, icu-format
-msgctxt "Home"
-msgid "Contact Tracing for SARS-CoV-2"
-msgstr "Ricerca di contatti per la SARS-CoV-2"
-
-#, elixir-autogen, icu-format
-msgid "Contact between {date} and now. (48 hours before symptom start)"
-msgstr "Contatto tra {date} e ora. (48 ore prima dell'inizio dei sintomi)"
-
-#, elixir-autogen, icu-format
-msgid "Contact between {date} and now. (48 hours before the first positive test)"
-msgstr "Contatto tra {date} e ora. (48 ore prima del primo test positivo)"
-
-#, elixir-autogen, icu-format
-msgid "Contact persons"
-msgstr "Persone di contatto"
-
-#, elixir-autogen, icu-format
 msgctxt "Test Reason"
 msgid "Contact tracing"
 msgstr "Rintracciamento dei contatti"
+
+#, elixir-autogen, icu-format
+msgctxt "Home"
+msgid "Contact Tracing for SARS-CoV-2"
+msgstr "Ricerca di contatti per la SARS-CoV-2"
 
 #, elixir-autogen, icu-format
 msgid "Continue"
@@ -1032,13 +1064,13 @@ msgid "Corporation"
 msgstr "Società"
 
 #, elixir-autogen, icu-format
-msgid "Correct Data"
-msgstr "Dati corretti"
-
-#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Exit"
 msgid "Correct address"
 msgstr "Indirizzo corretto"
+
+#, elixir-autogen, icu-format
+msgid "Correct Data"
+msgstr "Dati corretti"
 
 #, elixir-autogen, icu-format
 msgid "Correct phone number available"
@@ -1115,6 +1147,14 @@ msgid "Create New"
 msgstr "Crea nuovo"
 
 #, elixir-autogen, icu-format
+msgid "Create new person"
+msgstr "Crea una nuova persona"
+
+#, elixir-autogen, icu-format
+msgid "Create new possible index case"
+msgstr "Nuova possibile presentazione dell'indice"
+
+#, elixir-autogen, icu-format
 msgid "Create Note"
 msgstr "Crea una nota"
 
@@ -1131,14 +1171,6 @@ msgid "Create Transmission"
 msgstr "Crea una trasmissione"
 
 #, elixir-autogen, icu-format
-msgid "Create new person"
-msgstr "Crea una nuova persona"
-
-#, elixir-autogen, icu-format
-msgid "Create new possible index case"
-msgstr "Nuova possibile presentazione dell'indice"
-
-#, elixir-autogen, icu-format
 msgid "Create transmission"
 msgstr "Crea trasmissione"
 
@@ -1150,11 +1182,6 @@ msgstr "Creato a {created_at}"
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Current Step"
 msgstr "Passo corrente"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
-msgid "DKIM"
-msgstr "DKIM"
 
 #, elixir-autogen, icu-format
 msgid "Daily Statistics"
@@ -1348,6 +1375,16 @@ msgid "Delete"
 msgstr "Rimuovi"
 
 #, elixir-autogen, icu-format
+msgctxt "versioning_event"
+msgid "delete"
+msgstr "rimuovi"
+
+#, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "delete all"
+msgstr "cancella tutti"
+
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Delete Person"
 msgstr "Rimuovi la persona"
@@ -1359,6 +1396,15 @@ msgstr "Elimina selezionato"
 #, elixir-autogen, icu-format
 msgid "Deleted"
 msgstr "Cancellato"
+
+#, elixir-autogen, icu-format
+msgid "deleted"
+msgstr "cancellato"
+
+#, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "deleted"
+msgstr "cancellato"
 
 #, elixir-autogen, icu-format
 msgid "Deny"
@@ -1497,11 +1543,6 @@ msgid "Division"
 msgstr "Sezione"
 
 #, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
-msgid "Division UUID"
-msgstr "UUID della sezione"
-
-#, elixir-autogen, icu-format
 msgid "Division created successfully"
 msgstr "Sezione creata con successo"
 
@@ -1529,8 +1570,18 @@ msgid "Division updated successfully"
 msgstr "Sezione aggiornata con successo"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Division UUID"
+msgstr "UUID della sezione"
+
+#, elixir-autogen, icu-format
 msgid "Divisions"
 msgstr "Sezioni"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "divisions"
+msgstr "sezioni"
 
 #, elixir-autogen, icu-format
 msgid "Divisions merged successfully"
@@ -1543,6 +1594,11 @@ msgstr "Divisioni non trovate, chiudi questo popup e inserisci una manualmente n
 #, elixir-autogen, icu-format
 msgid "Divisions not found, please insert one manually."
 msgstr "Divisioni non trovate, inserisci una manualmente."
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp Field"
+msgid "DKIM"
+msgstr "DKIM"
 
 #, elixir-autogen, icu-format
 msgid "Do not append Note"
@@ -1632,6 +1688,10 @@ msgid "Educational institution"
 msgstr "Instituto d'instruzione"
 
 #, elixir-autogen, icu-format
+msgid "either an existing organisation, an unknown organisation or a comment must be filled"
+msgstr "inserisci un'organizzazione esistente, una nuova organizzazione oppure un commento"
+
+#, elixir-autogen, icu-format
 msgid "Either you or the other person did not weark a mask."
 msgstr "O voi o l'altra persona non ha indossato una maschera."
 
@@ -1685,6 +1745,10 @@ msgid "Email"
 msgstr "Email"
 
 #, elixir-autogen, icu-format
+msgid "Email created successfully"
+msgstr "Email creata con successo"
+
+#, elixir-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Email Send Failed"
 msgstr "Invio di e-mail non riuscito"
@@ -1700,8 +1764,9 @@ msgid "Email Signature"
 msgstr "Firma e-mail"
 
 #, elixir-autogen, icu-format
-msgid "Email created successfully"
-msgstr "Email creata con successo"
+msgctxt "Item Table"
+msgid "emails"
+msgstr "e-mail"
 
 #, elixir-autogen, icu-format
 msgctxt "Affiliation Kind"
@@ -1796,6 +1861,10 @@ msgid "End Reason"
 msgstr "Fine Motivo"
 
 #, elixir-autogen, icu-format
+msgid "End reason help"
+msgstr "Aiuto per la ragione finale"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.Index Field"
 msgid "End Reason Set Date"
 msgstr "Impostata data fine motivo"
@@ -1804,10 +1873,6 @@ msgstr "Impostata data fine motivo"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
 msgid "End Reason Set Date"
 msgstr "Impostata data fine motivo"
-
-#, elixir-autogen, icu-format
-msgid "End reason help"
-msgstr "Aiuto per la ragione finale"
 
 #, elixir-autogen, icu-format
 msgid "Enter Possible Transmissions"
@@ -1887,6 +1952,11 @@ msgid "Failed email contact ({failed_mail}) deleted"
 msgstr "Contatto tramite email fallito ({failed_mail}) cancellato"
 
 #, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "failed to send email."
+msgstr "non è riuscito a inviare l'e-mail."
+
+#, elixir-autogen, icu-format
 msgctxt "SMS Status"
 msgid "Failure"
 msgstr "Fallimento"
@@ -1955,6 +2025,16 @@ msgid "First Contact"
 msgstr "Primo contatto"
 
 #, elixir-autogen, icu-format
+msgctxt "Case Status"
+msgid "First contact"
+msgstr "Primo contatto"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Status"
+msgid "First contact, unreachable"
+msgstr "Primo contatto, irraggiungibile"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Propagator Field"
 msgid "First Name"
 msgstr "Nome"
@@ -1970,16 +2050,6 @@ msgid "First Name"
 msgstr "Nome"
 
 #, elixir-autogen, icu-format
-msgctxt "Case Status"
-msgid "First contact"
-msgstr "Primo contatto"
-
-#, elixir-autogen, icu-format
-msgctxt "Case Status"
-msgid "First contact, unreachable"
-msgstr "Primo contatto, irraggiungibile"
-
-#, elixir-autogen, icu-format
 msgctxt "Breakthrough Infection Export"
 msgid "Firstname"
 msgstr "Nome"
@@ -1990,34 +2060,34 @@ msgid "Firstname"
 msgstr "Nome"
 
 #, elixir-autogen, icu-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight date"
+msgstr "Data del volo"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight date"
+msgstr "Data del volo"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Flight Information"
 msgstr "Informazioni sul volo"
 
 #, elixir-autogen, icu-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Flight number"
+msgstr "Numero del volo"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
+msgid "Flight number"
+msgstr "Numero del volo"
+
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Problem"
 msgid "Flight Related"
 msgstr "Relativo ad un volo"
-
-#, elixir-autogen, icu-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Flight date"
-msgstr "Data del volo"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Flight date"
-msgstr "Data del volo"
-
-#, elixir-autogen, icu-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Flight number"
-msgstr "Numero del volo"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Flight Field"
-msgid "Flight number"
-msgstr "Numero del volo"
 
 #, elixir-autogen, icu-format
 msgid "Form data is invalid."
@@ -2068,9 +2138,19 @@ msgid "Gym"
 msgstr "Palestra"
 
 #, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "has declared a premature release."
+msgstr "ha dichiarato un rilascio prematuro."
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
 msgid "Has Documentation"
 msgstr "Ha una documentazione"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
+msgid "Has flown"
+msgstr "Ha volato"
 
 #, elixir-autogen, icu-format
 msgid "Has Symptoms"
@@ -2080,11 +2160,6 @@ msgstr "Ha sintomi"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Clinical Field"
 msgid "Has Symptoms"
 msgstr "Ha sintomi"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
-msgid "Has flown"
-msgstr "Ha volato"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Travel Field"
@@ -2200,6 +2275,11 @@ msgid "Hospitalizations"
 msgstr "Ospedalizzazioni"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "hospitalizations"
+msgstr "ricoveri"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Hostname"
 msgstr "Hostname"
@@ -2228,6 +2308,22 @@ msgstr "Come è avvenuto il tuo incontro con {first_name} {last_name}?"
 msgctxt "Auto Tracing Vaccination"
 msgid "How many vaccination shots have you received?"
 msgstr "Quante dosi di vaccino hai ricevuto?"
+
+#, elixir-autogen, icu-format
+msgid "https://www.apple.com/safari/"
+msgstr "https://www.apple.com/safari/"
+
+#, elixir-autogen, icu-format
+msgid "https://www.google.com/chrome/"
+msgstr "https://www.google.com/chrome/"
+
+#, elixir-autogen, icu-format
+msgid "https://www.microsoft.com/en-us/edge"
+msgstr "https://www.microsoft.com/en-us/edge"
+
+#, elixir-autogen, icu-format
+msgid "https://www.mozilla.org/en-US/firefox/new/"
+msgstr "https://www.mozilla.org/en-US/firefox/new/"
 
 #, elixir-autogen, icu-format
 msgid "Human Readable ID"
@@ -2273,40 +2369,6 @@ msgstr "Dominio IAM"
 msgctxt "Elixir.Hygeia.UserContext.User Field"
 msgid "IAM Subject"
 msgstr "Soggetto IAM"
-
-#, elixir-autogen, icu-format
-msgctxt "Case Import Type"
-msgid "ISM (06/11/2021) Death"
-msgstr "ISM (06/11/2021) Morte"
-
-#, elixir-autogen, icu-format
-msgctxt "Case Import Type"
-msgid "ISM (06/11/2021) Test"
-msgstr "Test ISM (06/11/2021)"
-
-#, elixir-autogen, icu-format
-msgctxt "External Reference Type"
-msgid "ISM Case"
-msgstr "Caso ISM"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
-msgid "ISM Code"
-msgstr "Codice ISM"
-
-#, elixir-autogen, icu-format
-msgctxt "External Reference Type"
-msgid "ISM Patient"
-msgstr "Paziente ISM"
-
-#, elixir-autogen, icu-format
-msgctxt "External Reference Type"
-msgid "ISM Report"
-msgstr "Rapporto ISM"
-
-#, elixir-autogen, icu-format
-msgid "ISM-ID: {id}"
-msgstr "ISM-ID: {id}"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.ImportContext.Row Field"
@@ -2397,6 +2459,11 @@ msgid "Import deleted successfully"
 msgstr "Importazione cancellata con successo"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "import_rows"
+msgstr "import_rows"
+
+#, elixir-autogen, icu-format
 msgctxt "Import Row Apply"
 msgid "Imported Data"
 msgstr "Dati importati"
@@ -2405,6 +2472,11 @@ msgstr "Dati importati"
 msgctxt "Inbox Row Show"
 msgid "Imported Data"
 msgstr "Dati importati"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "imports"
+msgstr "importazioni"
 
 #, elixir-autogen, icu-format
 msgid "Imports - Inbox"
@@ -2421,6 +2493,11 @@ msgid "Imports that imported this row"
 msgstr "Importazioni che hanno importato questa riga"
 
 #, elixir-autogen, icu-format
+msgctxt "Home"
+msgid "In case of service disruptions, please check the status page."
+msgstr "In caso di interruzioni del servizio, controlla la pagina dello stato."
+
+#, elixir-autogen, icu-format
 msgctxt "Email Status"
 msgid "In Progress"
 msgstr "In corso"
@@ -2429,11 +2506,6 @@ msgstr "In corso"
 msgctxt "SMS Status"
 msgid "In Progress"
 msgstr "In corso"
-
-#, elixir-autogen, icu-format
-msgctxt "Home"
-msgid "In case of service disruptions, please check the status page."
-msgstr "In caso di interruzioni del servizio, controlla la pagina dello stato."
 
 #, elixir-autogen, icu-format
 msgid "In this case there are no further actions necessary. \"Done\" should be set on the index and contact person."
@@ -2539,6 +2611,11 @@ msgid "Input needed"
 msgstr "Input necessario"
 
 #, elixir-autogen, icu-format
+msgctxt "versioning_event"
+msgid "insert"
+msgstr "inserire"
+
+#, elixir-autogen, icu-format
 msgctxt "Field"
 msgid "Inserted At"
 msgstr "Inserito a"
@@ -2563,13 +2640,13 @@ msgid "Into"
 msgstr "In"
 
 #, elixir-autogen, icu-format
-msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
-msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
-
-#, elixir-autogen, icu-format
 msgctxt "Inbox Row Patch Person"
 msgid "Invalid person details"
 msgstr "Informazioni della persona invalide"
+
+#, elixir-autogen, icu-format
+msgid "Invalid Person Details, if you believe this is an error, contact the tracing team."
+msgstr "Informazioni della persona invalide, se credi che questo sia un errore, contatta il team di rintracciamento."
 
 #, elixir-autogen, icu-format
 msgid "Is the SwissCovid App installed / in operation on your smartphone?"
@@ -2584,6 +2661,40 @@ msgstr "È sincero"
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
 msgid "Is vaccinated"
 msgstr "Vaccinati"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Import Type"
+msgid "ISM (06/11/2021) Death"
+msgstr "ISM (06/11/2021) Morte"
+
+#, elixir-autogen, icu-format
+msgctxt "Case Import Type"
+msgid "ISM (06/11/2021) Test"
+msgstr "Test ISM (06/11/2021)"
+
+#, elixir-autogen, icu-format
+msgctxt "External Reference Type"
+msgid "ISM Case"
+msgstr "Caso ISM"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.MutationContext.Mutation Field"
+msgid "ISM Code"
+msgstr "Codice ISM"
+
+#, elixir-autogen, icu-format
+msgctxt "External Reference Type"
+msgid "ISM Patient"
+msgstr "Paziente ISM"
+
+#, elixir-autogen, icu-format
+msgctxt "External Reference Type"
+msgid "ISM Report"
+msgstr "Rapporto ISM"
+
+#, elixir-autogen, icu-format
+msgid "ISM-ID: {id}"
+msgstr "ISM-ID: {id}"
 
 #, elixir-autogen, icu-format
 msgid "Isolation"
@@ -2661,17 +2772,17 @@ msgid "Keep Assignees"
 msgstr "Mantenere gli assegnatari"
 
 #, elixir-autogen, icu-format
+msgctxt "Inbox Row Patch Person"
+msgid "Keep personal data"
+msgstr "Conserva i dati personali"
+
+#, elixir-autogen, icu-format
 msgid "Keep Phases"
 msgstr "Mantenere le fasi"
 
 #, elixir-autogen, icu-format
 msgid "Keep Status"
 msgstr "Mantenere lo stato"
-
-#, elixir-autogen, icu-format
-msgctxt "Inbox Row Patch Person"
-msgid "Keep personal data"
-msgstr "Conserva i dati personali"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.AutoTracingContext.AutoTracing.Occupation Field"
@@ -2799,6 +2910,10 @@ msgid "Listing Cases"
 msgstr "Elenco casi"
 
 #, elixir-autogen, icu-format
+msgid "Listing high risk countries"
+msgstr "Elenco dei paesi ad alto rischio"
+
+#, elixir-autogen, icu-format
 msgid "Listing Imports"
 msgstr "Elenco delle importazioni"
 
@@ -2829,10 +2944,6 @@ msgstr "Lista inquilini"
 #, elixir-autogen, icu-format
 msgid "Listing Users"
 msgstr "Elenco degli utenti"
-
-#, elixir-autogen, icu-format
-msgid "Listing high risk countries"
-msgstr "Elenco dei paesi ad alto rischio"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Monitoring Field"
@@ -2905,6 +3016,11 @@ msgstr "Esportazione manuale"
 #, elixir-autogen, icu-format
 msgid "March"
 msgstr "Marzo"
+
+#, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "mark all as read"
+msgstr "segna tutti come letti"
 
 #, elixir-autogen, icu-format
 msgid "May"
@@ -3069,6 +3185,11 @@ msgid "Mutations"
 msgstr "Mutazioni"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "mutations"
+msgstr "mutazioni"
+
+#, elixir-autogen, icu-format
 msgid "Name"
 msgstr "Nome"
 
@@ -3117,6 +3238,11 @@ msgid "Need help"
 msgstr "Serve aiuto"
 
 #, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "needs help with self-service."
+msgstr "ha bisogno di aiuto con il self-service."
+
+#, elixir-autogen, icu-format
 msgctxt "Test Result"
 msgid "Negative"
 msgstr "Negativo"
@@ -3132,8 +3258,24 @@ msgid "Negative Test"
 msgstr "Test negativo"
 
 #, elixir-autogen, icu-format
+msgid "New affiliation"
+msgstr "Nuova affiliazione"
+
+#, elixir-autogen, icu-format
 msgid "New Case"
 msgstr "Nuovo caso"
+
+#, elixir-autogen, icu-format
+msgid "New cases"
+msgstr "Nuovi casi"
+
+#, elixir-autogen, icu-format
+msgid "New contact method"
+msgstr "Nuovo metodo di contatto"
+
+#, elixir-autogen, icu-format
+msgid "New date"
+msgstr "Nuova data"
 
 #, elixir-autogen, icu-format
 msgid "New Division"
@@ -3161,11 +3303,27 @@ msgid "New Mutation"
 msgstr "Nuova mutazione"
 
 #, elixir-autogen, icu-format
+msgid "New mutation"
+msgstr "Nuova mutazione"
+
+#, elixir-autogen, icu-format
+msgid "New note"
+msgstr "Nuova nota"
+
+#, elixir-autogen, icu-format
 msgid "New Organisation"
 msgstr "Nuova organizzazione"
 
 #, elixir-autogen, icu-format
+msgid "New organisation"
+msgstr "Nuova organizzazione"
+
+#, elixir-autogen, icu-format
 msgid "New Person"
+msgstr "Nuova persona"
+
+#, elixir-autogen, icu-format
+msgid "New person"
 msgstr "Nuova persona"
 
 #, elixir-autogen, icu-format
@@ -3179,6 +3337,14 @@ msgstr "Nuovo indice possibile"
 #, elixir-autogen, icu-format
 msgid "New Possible Index Submission"
 msgstr "Nuova possibile presentazione dell'indice"
+
+#, elixir-autogen, icu-format
+msgid "New possible index submission"
+msgstr "Nuova possibile presentazione dell'indice"
+
+#, elixir-autogen, icu-format
+msgid "New reference"
+msgstr "Nuovo riferimento"
 
 #, elixir-autogen, icu-format
 msgid "New Registered Cases (Processed)"
@@ -3201,7 +3367,15 @@ msgid "New Tenant"
 msgstr "Nuovo inquilino"
 
 #, elixir-autogen, icu-format
+msgid "New tenant"
+msgstr "Nuovo inquilino"
+
+#, elixir-autogen, icu-format
 msgid "New Test"
+msgstr "Nuovo test"
+
+#, elixir-autogen, icu-format
+msgid "New test"
 msgstr "Nuovo test"
 
 #, elixir-autogen, icu-format
@@ -3209,60 +3383,12 @@ msgid "New Transmission"
 msgstr "Nuova trasmissione"
 
 #, elixir-autogen, icu-format
-msgid "New Visit"
-msgstr "Nuova visita"
-
-#, elixir-autogen, icu-format
-msgid "New affiliation"
-msgstr "Nuova affiliazione"
-
-#, elixir-autogen, icu-format
-msgid "New cases"
-msgstr "Nuovi casi"
-
-#, elixir-autogen, icu-format
-msgid "New contact method"
-msgstr "Nuovo metodo di contatto"
-
-#, elixir-autogen, icu-format
-msgid "New date"
-msgstr "Nuova data"
-
-#, elixir-autogen, icu-format
-msgid "New mutation"
-msgstr "Nuova mutazione"
-
-#, elixir-autogen, icu-format
-msgid "New note"
-msgstr "Nuova nota"
-
-#, elixir-autogen, icu-format
-msgid "New organisation"
-msgstr "Nuova organizzazione"
-
-#, elixir-autogen, icu-format
-msgid "New person"
-msgstr "Nuova persona"
-
-#, elixir-autogen, icu-format
-msgid "New possible index submission"
-msgstr "Nuova possibile presentazione dell'indice"
-
-#, elixir-autogen, icu-format
-msgid "New reference"
-msgstr "Nuovo riferimento"
-
-#, elixir-autogen, icu-format
-msgid "New tenant"
-msgstr "Nuovo inquilino"
-
-#, elixir-autogen, icu-format
-msgid "New test"
-msgstr "Nuovo test"
-
-#, elixir-autogen, icu-format
 msgid "New transmission"
 msgstr "Nuova trasmissione"
+
+#, elixir-autogen, icu-format
+msgid "New Visit"
+msgstr "Nuova visita"
 
 #, elixir-autogen, icu-format
 msgid "New visit"
@@ -3301,9 +3427,21 @@ msgid "No Auto Tracing Problems"
 msgstr "Problema di tracciamento automatico"
 
 #, elixir-autogen, icu-format
+msgid "No class or division found, please close this popup and insert one manually in the dedicated fields."
+msgstr "Nessuna classe o divisione trovata, chiudi questo popup e inserisci una manualmente nei campi dedicati."
+
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Problem"
 msgid "No Contact Method"
 msgstr "Metodi di contatto"
+
+#, elixir-autogen, icu-format
+msgid "No data to display"
+msgstr "Nessun dato da visualizzare"
+
+#, elixir-autogen, icu-format
+msgid "No data to show"
+msgstr "Nessun dato da mostrare"
 
 #, elixir-autogen, icu-format
 msgctxt "Index End Reason"
@@ -3316,6 +3454,14 @@ msgid "No Follow Up"
 msgstr "Nessun follow-up"
 
 #, elixir-autogen, icu-format
+msgid "No further inquiries"
+msgstr "Non ci sono altre richieste"
+
+#, elixir-autogen, icu-format
+msgid "No hospitalizations"
+msgstr "Nessun ricovero"
+
+#, elixir-autogen, icu-format
 msgid "No Order"
 msgstr "Nessun ordine"
 
@@ -3325,37 +3471,13 @@ msgid "No Problems detected."
 msgstr "Nessun problema rilevato."
 
 #, elixir-autogen, icu-format
+msgid "No propagator"
+msgstr "Nessun propagatore"
+
+#, elixir-autogen, icu-format
 msgctxt "Auto Tracing Problem"
 msgid "No Reaction"
 msgstr "Nessuna reazione"
-
-#, elixir-autogen, icu-format
-msgid "No Symptoms"
-msgstr "Nessun sintomo"
-
-#, elixir-autogen, icu-format
-msgid "No class or division found, please close this popup and insert one manually in the dedicated fields."
-msgstr "Nessuna classe o divisione trovata, chiudi questo popup e inserisci una manualmente nei campi dedicati."
-
-#, elixir-autogen, icu-format
-msgid "No data to display"
-msgstr "Nessun dato da visualizzare"
-
-#, elixir-autogen, icu-format
-msgid "No data to show"
-msgstr "Nessun dato da mostrare"
-
-#, elixir-autogen, icu-format
-msgid "No further inquiries"
-msgstr "Non ci sono altre richieste"
-
-#, elixir-autogen, icu-format
-msgid "No hospitalizations"
-msgstr "Nessun ricovero"
-
-#, elixir-autogen, icu-format
-msgid "No propagator"
-msgstr "Nessun propagatore"
 
 #, elixir-autogen, icu-format
 msgid "No recipient"
@@ -3366,17 +3488,16 @@ msgid "No submissions have been entered yet. Please submit all relevant people. 
 msgstr "Non è stata ancora inserita nessuna candidatura. Si prega di inviare tutte le persone rilevanti. I contributi precedenti possono essere visualizzati, modificati e cancellati anche in seguito."
 
 #, elixir-autogen, icu-format
+msgid "No Symptoms"
+msgstr "Nessun sintomo"
+
+#, elixir-autogen, icu-format
 msgid "No verson entries found"
 msgstr "Nessuna voce di versione trovata"
 
 #, elixir-autogen, icu-format
 msgid "None"
 msgstr "Nessuno"
-
-#, elixir-autogen, icu-format
-msgctxt "vaccination_done"
-msgid "Not Done"
-msgstr "Non Fatto"
 
 #, elixir-autogen, icu-format
 msgid "Not anonymized"
@@ -3386,6 +3507,11 @@ msgstr "Non anonimizzato"
 msgctxt "Import Table"
 msgid "Not authorised"
 msgstr "Non autorizzato"
+
+#, elixir-autogen, icu-format
+msgctxt "vaccination_done"
+msgid "Not Done"
+msgstr "Non Fatto"
 
 #, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
@@ -3416,12 +3542,22 @@ msgid "Notes"
 msgstr "Note"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "notes"
+msgstr "note"
+
+#, elixir-autogen, icu-format
 msgid "Nothing to reidentify"
 msgstr "Niente da reidentificare"
 
 #, elixir-autogen, icu-format
 msgid "Notifications"
 msgstr "Notifiche"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "notifications"
+msgstr "notifiche"
 
 #, elixir-autogen, icu-format
 msgid "November"
@@ -3446,6 +3582,10 @@ msgid "October"
 msgstr "Ottobre"
 
 #, elixir-autogen, icu-format
+msgid "on \"From\" day"
+msgstr "il giorno \"Da\""
+
+#, elixir-autogen, icu-format
 msgid "Oops!"
 msgstr "Ops!"
 
@@ -3456,6 +3596,10 @@ msgstr "Apri caso in una nuova scheda"
 #, elixir-autogen, icu-format
 msgid "Open transmission in new tab"
 msgstr "Apri trasmissione in una nuova scheda"
+
+#, elixir-autogen, icu-format
+msgid "or"
+msgstr "o"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
@@ -3491,16 +3635,6 @@ msgid "Organisation"
 msgstr "Organizzazione"
 
 #, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
-msgid "Organisation UUID"
-msgstr "Organizzazione UUID"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
-msgid "Organisation UUID"
-msgstr "Organizzazione UUID"
-
-#, elixir-autogen, icu-format
 msgid "Organisation created successfully"
 msgstr "Organizzazione creata con successo"
 
@@ -3518,8 +3652,23 @@ msgid "Organisation updated successfully"
 msgstr "Organizzazione aggiornata con successo"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Organisation UUID"
+msgstr "Organizzazione UUID"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Division Field"
+msgid "Organisation UUID"
+msgstr "Organizzazione UUID"
+
+#, elixir-autogen, icu-format
 msgid "Organisations"
 msgstr "Organizzazioni"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "organisations"
+msgstr "organizzazioni"
 
 #, elixir-autogen, icu-format
 msgid "Organisations merged successfully"
@@ -3620,11 +3769,6 @@ msgid "Other End Reason"
 msgstr "Altro motivo finale"
 
 #, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
-msgid "Other Type"
-msgstr "Altro tipo"
-
-#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Other reason"
 msgstr "Altro motivo"
@@ -3633,6 +3777,11 @@ msgstr "Altro motivo"
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
 msgid "Other reason for disabling premature release"
 msgstr "Altro motivo per disabilitare il rilascio anticipato dalla quarantena"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.Case.Phase.PossibleIndex Field"
+msgid "Other Type"
+msgstr "Altro tipo"
 
 #, elixir-autogen, icu-format
 msgctxt "Possible Index Type"
@@ -3695,6 +3844,15 @@ msgid "Own Household"
 msgstr "Casa propria"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
+msgid "Password"
+msgstr "Password"
+
+#, elixir-autogen, icu-format
+msgid "Patch existing Test"
+msgstr "Test di patch esistenti"
+
+#, elixir-autogen, icu-format
 msgctxt "Test Kind"
 msgid "PCR"
 msgstr "PCR"
@@ -3703,15 +3861,6 @@ msgstr "PCR"
 msgctxt "Test Kind"
 msgid "PCR Quick"
 msgstr "PCR Veloce"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
-msgid "Password"
-msgstr "Password"
-
-#, elixir-autogen, icu-format
-msgid "Patch existing Test"
-msgstr "Test di patch esistenti"
 
 #, elixir-autogen, icu-format
 msgctxt "Case Import Row Status"
@@ -3730,6 +3879,11 @@ msgstr "Persone"
 msgctxt "Create Possible Index Step"
 msgid "People"
 msgstr "Persone"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "people"
+msgstr "persone"
 
 #, elixir-autogen, icu-format
 msgid "People admitted in hospital"
@@ -3785,8 +3939,21 @@ msgid "Person"
 msgstr "Persona"
 
 #, elixir-autogen, icu-format
+msgctxt "Person Base Data"
+msgid "Person anonymized successfully"
+msgstr "La persona è stata resa anonima con successo"
+
+#, elixir-autogen, icu-format
 msgid "Person Base Data"
 msgstr "Dati generali della persona"
+
+#, elixir-autogen, icu-format
+msgid "Person created successfully"
+msgstr "Persona creata con successo"
+
+#, elixir-autogen, icu-format
+msgid "Person deleted successfully"
+msgstr "Persona eliminata con successo"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
@@ -3804,36 +3971,13 @@ msgid "Person ID"
 msgstr "Persona UUID"
 
 #, elixir-autogen, icu-format
+msgid "Person is symptomatic and therefore tested"
+msgstr "La persona è sintomatica e quindi testata"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Entity Field"
 msgid "Person Lastname"
 msgstr "Persona Cognome"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.Case Field"
-msgid "Person UUID"
-msgstr "Persona UUID"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
-msgid "Person UUID"
-msgstr "Persona UUID"
-
-#, elixir-autogen, icu-format
-msgctxt "Person Base Data"
-msgid "Person anonymized successfully"
-msgstr "La persona è stata resa anonima con successo"
-
-#, elixir-autogen, icu-format
-msgid "Person created successfully"
-msgstr "Persona creata con successo"
-
-#, elixir-autogen, icu-format
-msgid "Person deleted successfully"
-msgstr "Persona eliminata con successo"
-
-#, elixir-autogen, icu-format
-msgid "Person is symptomatic and therefore tested"
-msgstr "La persona è sintomatica e quindi testata"
 
 #, elixir-autogen, icu-format
 msgid "Person living in the same household or in a very close relationship. (e.g. couple that is not living together)"
@@ -3851,6 +3995,16 @@ msgstr "Persona eliminata con successo"
 #, elixir-autogen, icu-format
 msgid "Person updated successfully"
 msgstr "Persona aggiornata con successo"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.Case Field"
+msgid "Person UUID"
+msgstr "Persona UUID"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.OrganisationContext.Affiliation Field"
+msgid "Person UUID"
+msgstr "Persona UUID"
 
 #, elixir-autogen, icu-format
 msgctxt "ISM 2021-06-11 Death Field Group"
@@ -3876,14 +4030,6 @@ msgid "Phase"
 msgstr "Fase"
 
 #, elixir-autogen, icu-format
-msgid "Phase Quarantine / Isolation Orders must not overlap."
-msgstr "Gli ordini di quarantena/isolamento di fase non devono sovrapporsi."
-
-#, elixir-autogen, icu-format
-msgid "Phase Type already exists on the case"
-msgstr "Il tipo di fase esiste già sul caso"
-
-#, elixir-autogen, icu-format
 msgid "Phase created at"
 msgstr "Caso creato il"
 
@@ -3892,8 +4038,16 @@ msgid "Phase created successfully"
 msgstr "Fase creata con successo"
 
 #, elixir-autogen, icu-format
+msgid "Phase Quarantine / Isolation Orders must not overlap."
+msgstr "Gli ordini di quarantena/isolamento di fase non devono sovrapporsi."
+
+#, elixir-autogen, icu-format
 msgid "Phase start- and end-dates must be set to create Isolation Confirmations."
 msgstr "Le date di inizio e fine fase devono essere impostate per creare conferme di isolamento."
+
+#, elixir-autogen, icu-format
+msgid "Phase Type already exists on the case"
+msgstr "Il tipo di fase esiste già sul caso"
 
 #, elixir-autogen, icu-format
 msgid "Phases"
@@ -3973,6 +4127,18 @@ msgid "Place of departure"
 msgstr "Luogo di partenza"
 
 #, elixir-autogen, icu-format
+msgid "please add at least one educational institution that you visited during the period in consideration"
+msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
+
+#, elixir-autogen, icu-format
+msgid "please add at least one flight that you took during the period in consideration"
+msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
+
+#, elixir-autogen, icu-format
+msgid "please add at least one occupation"
+msgstr "si prega di aggiungere almeno un'occupazione"
+
+#, elixir-autogen, icu-format
 msgid "Please enter a full name."
 msgstr "Si prega di inserire un nome completo."
 
@@ -3981,12 +4147,24 @@ msgid "Please enter your place of residence."
 msgstr "Inserisci il tuo luogo di residenza."
 
 #, elixir-autogen, icu-format
+msgid "please fill in the information about the place where you contracted the virus"
+msgstr "inserisci il luogo dove hai contratto il virus"
+
+#, elixir-autogen, icu-format
+msgid "please fill in the information of the person who passed on the virus to you"
+msgstr "inserisci le informazioni della persona che ti ha trasmesso il virus"
+
+#, elixir-autogen, icu-format
 msgid "Please indicate how we can reach you:"
 msgstr "Si prega di indicare come possiamo raggiungerti:"
 
 #, elixir-autogen, icu-format
 msgid "Please note that submitting contact persons only works in recent versions of the following browsers:"
 msgstr "Si prega di notare che l'invio di contatti funziona solo nelle versioni recenti dei seguenti browser:"
+
+#, elixir-autogen, icu-format
+msgid "please provide the information about your travel"
+msgstr "per favore fornisci le informazioni sul tuo viaggio"
 
 #, elixir-autogen, icu-format
 msgid "Please select the countries you have visited"
@@ -4022,13 +4200,26 @@ msgid "Possible Index Submission"
 msgstr "Possibili invii all'indice"
 
 #, elixir-autogen, icu-format
+msgid "Possible index submission created successfully"
+msgstr "Possibile invio dell'indice creato con successo"
+
+#, elixir-autogen, icu-format
 msgid "Possible Index Submissions"
 msgstr "Possibili invii all'indice"
+
+#, elixir-autogen, icu-format
+msgid "Possible index submissions can only be managed for cases with an index phase."
+msgstr "Le istanze di indice possibile possono essere gestite solo per i casi con una fase di indice."
 
 #, elixir-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Possible Index Submitted"
 msgstr "Possibile indice presentato"
+
+#, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "possible index submitted."
+msgstr "possibile indice presentato."
 
 #, elixir-autogen, icu-format
 msgctxt "Auto Tracing Problem"
@@ -4039,14 +4230,6 @@ msgstr "Inserire le trasmissioni presunte"
 msgctxt "Auto Tracing Resolve Problems"
 msgid "Possible Transmission"
 msgstr "Inserire le trasmissioni presunte"
-
-#, elixir-autogen, icu-format
-msgid "Possible index submission created successfully"
-msgstr "Possibile invio dell'indice creato con successo"
-
-#, elixir-autogen, icu-format
-msgid "Possible index submissions can only be managed for cases with an index phase."
-msgstr "Le istanze di indice possibile possono essere gestite solo per i casi con una fase di indice."
 
 #, elixir-autogen, icu-format
 msgid "PossibleIndexSubmission deleted successfully"
@@ -4061,10 +4244,6 @@ msgid "Premature Release"
 msgstr "Rilascio prematuro"
 
 #, elixir-autogen, icu-format
-msgid "Premature Releases"
-msgstr "Rilasci prematuri"
-
-#, elixir-autogen, icu-format
 msgid "Premature release created successfully"
 msgstr "Rilascio prematuro creato con successo"
 
@@ -4075,6 +4254,15 @@ msgstr "Rilasci prematuri"
 #, elixir-autogen, icu-format
 msgid "Premature release permission"
 msgstr "Rilasci prematuri"
+
+#, elixir-autogen, icu-format
+msgid "Premature Releases"
+msgstr "Rilasci prematuri"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "premature_releases"
+msgstr "rilasci_precoci"
 
 #, elixir-autogen, icu-format
 msgctxt "School Type"
@@ -4188,6 +4376,11 @@ msgstr "Propagatore Caso UUID"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
+msgid "Propagator Internal"
+msgstr "Propagatore Interno"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
 msgid "Propagator ISM ID"
 msgstr "Propagatore ISM ID"
 
@@ -4200,11 +4393,6 @@ msgstr "Propagatore ISM ID"
 msgctxt "Elixir.HygeiaWeb.CaseLive.CreatePossibleIndex.FormStep.DefineTransmission Field"
 msgid "Propagator ISM ID"
 msgstr "Propagatore ISM ID"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
-msgid "Propagator Internal"
-msgstr "Propagatore Interno"
 
 #, elixir-autogen, icu-format
 msgid "Protocol"
@@ -4220,17 +4408,17 @@ msgid "Pub, Discotheque, Dance club, Night club"
 msgstr "Pub, Discoteca, Dance club, Night club"
 
 #, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
-msgid "Public Statistics"
-msgstr "Statistiche pubbliche"
-
-#, elixir-autogen, icu-format
 msgid "Public or private event < 300 people"
 msgstr "Evento pubblico o privato < 300 persone"
 
 #, elixir-autogen, icu-format
 msgid "Public or private event > 300 people"
 msgstr "Evento pubblico o privato > 300 persone"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.TenantContext.Tenant Field"
+msgid "Public Statistics"
+msgstr "Statistiche pubbliche"
 
 #, elixir-autogen, icu-format
 msgid "Public transport, cable cars"
@@ -4255,6 +4443,14 @@ msgid "Quarantine Confirmation"
 msgstr "Conferma della quarantena"
 
 #, elixir-autogen, icu-format
+msgid "Quarantine confirmation will be sent on the selected contact methods."
+msgstr "La conferma della quarantena verrà inviata sui metodi di contatto selezionati."
+
+#, elixir-autogen, icu-format
+msgid "Quarantine confirmation will not be sent to this person."
+msgstr "La conferma della quarantena non verrà inviata a questa persona."
+
+#, elixir-autogen, icu-format
 msgid "Quarantine Confirmations are only available for contact persons."
 msgstr "Le conferme di quarantena sono disponibili solo per le persone di contatto."
 
@@ -4262,6 +4458,10 @@ msgstr "Le conferme di quarantena sono disponibili solo per le persone di contat
 msgctxt "Test Reason"
 msgid "Quarantine End"
 msgstr "Fine della quarantena"
+
+#, elixir-autogen, icu-format
+msgid "Quarantine end reasons"
+msgstr "Motivi della fine della quarantena"
 
 #, elixir-autogen, icu-format
 msgid "Quarantine Order"
@@ -4274,18 +4474,6 @@ msgstr "Quarantena ordinata"
 #, elixir-autogen, icu-format
 msgid "Quarantine Period End"
 msgstr "Fine del periodo di quarantena"
-
-#, elixir-autogen, icu-format
-msgid "Quarantine confirmation will be sent on the selected contact methods."
-msgstr "La conferma della quarantena verrà inviata sui metodi di contatto selezionati."
-
-#, elixir-autogen, icu-format
-msgid "Quarantine confirmation will not be sent to this person."
-msgstr "La conferma della quarantena non verrà inviata a questa persona."
-
-#, elixir-autogen, icu-format
-msgid "Quarantine end reasons"
-msgstr "Motivi della fine della quarantena"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.PrematureRelease Field"
@@ -4355,13 +4543,13 @@ msgstr "ID destinatario"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
-msgid "Recipient ISM ID"
-msgstr "ID ISM destinatario"
+msgid "Recipient Internal"
+msgstr "Destinatario Interno"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission Field"
-msgid "Recipient Internal"
-msgstr "Destinatario Interno"
+msgid "Recipient ISM ID"
+msgstr "ID ISM destinatario"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.SedexExportConfiguration Field"
@@ -4555,20 +4743,6 @@ msgid "Rows"
 msgstr "Righe"
 
 #, elixir-autogen, icu-format
-msgctxt "Versioning Origin"
-msgid "SMS Sender"
-msgstr "Mittente SMS"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
-msgid "SMS Signature"
-msgstr "Firma SMS"
-
-#, elixir-autogen, icu-format
-msgid "SMS created successfully"
-msgstr "SMS creato con successo"
-
-#, elixir-autogen, icu-format
 msgid "Save"
 msgstr "Salva"
 
@@ -4648,24 +4822,13 @@ msgid "Sedex Exports"
 msgstr "Esportazioni Sedex"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "sedex_exports"
+msgstr "sedex_exports"
+
+#, elixir-autogen, icu-format
 msgid "Select Case"
 msgstr "Seleziona il caso"
-
-#, elixir-autogen, icu-format
-msgid "Select Division"
-msgstr "Seleziona la divisione"
-
-#, elixir-autogen, icu-format
-msgid "Select Organisation"
-msgstr "Selezionare l'organizzazione"
-
-#, elixir-autogen, icu-format
-msgid "Select Person"
-msgstr "Selezionare la persona"
-
-#, elixir-autogen, icu-format
-msgid "Select Type"
-msgstr "Selezionare il tipo"
 
 #, elixir-autogen, icu-format
 msgid "Select complexity"
@@ -4676,12 +4839,24 @@ msgid "Select country"
 msgstr "Seleziona la complessità"
 
 #, elixir-autogen, icu-format
+msgid "Select Division"
+msgstr "Seleziona la divisione"
+
+#, elixir-autogen, icu-format
 msgid "Select end reason"
 msgstr "Seleziona il motivo finale"
 
 #, elixir-autogen, icu-format
 msgid "Select mutation"
 msgstr "Seleziona la mutazione"
+
+#, elixir-autogen, icu-format
+msgid "Select Organisation"
+msgstr "Selezionare l'organizzazione"
+
+#, elixir-autogen, icu-format
+msgid "Select Person"
+msgstr "Selezionare la persona"
 
 #, elixir-autogen, icu-format
 msgid "Select premature release disabled reason"
@@ -4704,9 +4879,18 @@ msgid "Select tenant"
 msgstr "Seleziona inquilino"
 
 #, elixir-autogen, icu-format
+msgid "Select Type"
+msgstr "Selezionare il tipo"
+
+#, elixir-autogen, icu-format
 msgctxt "Notification Type"
 msgid "Self Service Help Request"
 msgstr "Richiesta di aiuto self-service"
+
+#, elixir-autogen, icu-format
+msgctxt "Auto Tracing Resolve Problems"
+msgid "Send a SwissCovid App Code to the person."
+msgstr "Invia un codice SwissCovid App alla persona."
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case.Phase Field"
@@ -4760,11 +4944,6 @@ msgstr "Invia SMS di conferma della quarantena"
 #, elixir-autogen, icu-format
 msgid "Send SMS Quarantine End Confirmation"
 msgstr "Invia SMS di conferma fine quarantena"
-
-#, elixir-autogen, icu-format
-msgctxt "Auto Tracing Resolve Problems"
-msgid "Send a SwissCovid App Code to the person."
-msgstr "Invia un codice SwissCovid App alla persona."
 
 #, elixir-autogen, icu-format
 msgctxt "Auto Tracing Resolve Problems"
@@ -4829,10 +5008,6 @@ msgid "Show"
 msgstr "Mostra"
 
 #, elixir-autogen, icu-format
-msgid "Show Statistics"
-msgstr "Mostra le statistiche"
-
-#, elixir-autogen, icu-format
 msgid "Show all"
 msgstr "Mostra tutto"
 
@@ -4843,6 +5018,10 @@ msgstr "Nuovi casi"
 #, elixir-autogen, icu-format
 msgid "Show people"
 msgstr "Mostra alle persone"
+
+#, elixir-autogen, icu-format
+msgid "Show Statistics"
+msgstr "Mostra le statistiche"
 
 #, elixir-autogen, icu-format
 msgid "Showing {count} of {total} entries"
@@ -4861,6 +5040,25 @@ msgstr "Persone simili nel sistema"
 msgctxt "Clinical Symptom"
 msgid "Skin Rash"
 msgstr "Eruzione cutanea"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "sms"
+msgstr "sms"
+
+#, elixir-autogen, icu-format
+msgid "SMS created successfully"
+msgstr "SMS creato con successo"
+
+#, elixir-autogen, icu-format
+msgctxt "Versioning Origin"
+msgid "SMS Sender"
+msgstr "Mittente SMS"
+
+#, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.TenantContext.Tenant.TemplateParameters Field"
+msgid "SMS Signature"
+msgstr "Firma SMS"
 
 #, elixir-autogen, icu-format
 msgid "Smtp"
@@ -4964,6 +5162,10 @@ msgid "Status"
 msgstr "Stato"
 
 #, elixir-autogen, icu-format
+msgid "Status help"
+msgstr "Aiuto per lo status"
+
+#, elixir-autogen, icu-format
 msgid "Status Page"
 msgstr "Pagina di stato"
 
@@ -4971,10 +5173,6 @@ msgstr "Pagina di stato"
 msgctxt "Home"
 msgid "Status Page"
 msgstr "Pagina di stato"
-
-#, elixir-autogen, icu-format
-msgid "Status help"
-msgstr "Aiuto per lo status"
 
 #, elixir-autogen, icu-format
 msgctxt "Visit reason"
@@ -5158,6 +5356,11 @@ msgid "System Messages"
 msgstr "Messaggi di sistema"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "system_messages"
+msgstr "messaggi di sistema"
+
+#, elixir-autogen, icu-format
 msgid "Take Me Home"
 msgstr "Portami a casa"
 
@@ -5214,6 +5417,18 @@ msgid "Tenant"
 msgstr "Inquilino"
 
 #, elixir-autogen, icu-format
+msgid "Tenant created successfully"
+msgstr "Inquilino creato con successo"
+
+#, elixir-autogen, icu-format
+msgid "Tenant deleted successfully"
+msgstr "Inquilino cancellato con successo"
+
+#, elixir-autogen, icu-format
+msgid "Tenant updated successfully"
+msgstr "Inquilino aggiornato con successo"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Case Field"
 msgid "Tenant UUID"
 msgstr "UUID dell'inquilino"
@@ -5234,20 +5449,13 @@ msgid "Tenant UUID"
 msgstr "UUID dell'inquilino"
 
 #, elixir-autogen, icu-format
-msgid "Tenant created successfully"
-msgstr "Inquilino creato con successo"
-
-#, elixir-autogen, icu-format
-msgid "Tenant deleted successfully"
-msgstr "Inquilino cancellato con successo"
-
-#, elixir-autogen, icu-format
-msgid "Tenant updated successfully"
-msgstr "Inquilino aggiornato con successo"
-
-#, elixir-autogen, icu-format
 msgid "Tenants"
 msgstr "Inquilini"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "tenants"
+msgstr "inquilini"
 
 #, elixir-autogen, icu-format
 msgid "Test"
@@ -5257,11 +5465,6 @@ msgstr "Test"
 msgctxt "ISM 2021-06-11 Test Field Group"
 msgid "Test"
 msgstr "Test"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.Test Field"
-msgid "Test Kind"
-msgstr "Tipo di test"
 
 #, elixir-autogen, icu-format
 msgid "Test as part of a planned trip"
@@ -5288,6 +5491,11 @@ msgid "Test for early termination of quarantine"
 msgstr "Test per la cessazione anticipata della quarantena"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.Test Field"
+msgid "Test Kind"
+msgstr "Tipo di test"
+
+#, elixir-autogen, icu-format
 msgid "Test reference given by the laboratory."
 msgstr "Riferimento del test fornito dal laboratorio."
 
@@ -5308,6 +5516,11 @@ msgid "Tests"
 msgstr "Test"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "tests"
+msgstr "test"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.SystemMessageContext.SystemMessage Field"
 msgid "Text"
 msgstr "Testo"
@@ -5326,6 +5539,14 @@ msgid "That depends mostly on your place of residence. We will forward your data
 msgstr "Questo dipende soprattutto dal suo luogo di residenza. Trasmetteremo i suoi dati all'entità responsabile di rintracciarla."
 
 #, elixir-autogen, icu-format
+msgid "the assigned tenant has not configured email notifications"
+msgstr "l'inquilino assegnato non ha configurato le notifiche e-mail"
+
+#, elixir-autogen, icu-format
+msgid "the assigned tenant has not configured sms notifications"
+msgstr "l'inquilino assegnato non ha configurato le notifiche sms"
+
+#, elixir-autogen, icu-format
 msgctxt "Phase Create Modal"
 msgid "The automated case close email for the {type} phase will be disabled."
 msgstr "L'email di chiusura automatica del caso per la fase {type} sarà disabilitata."
@@ -5338,6 +5559,14 @@ msgstr "L'email di chiusura automatica del caso per la fase {type} sarà disabil
 #, elixir-autogen, icu-format
 msgid "The case administraton sends cases like this. Index has not been contacted"
 msgstr "L'amministrazione del caso invia casi come questo. L'indice non è stato contattato"
+
+#, elixir-autogen, icu-format
+msgid "the case contains an index phase"
+msgstr "il caso contiene una fase indice"
+
+#, elixir-autogen, icu-format
+msgid "the case is managed by an unmanaged tenant"
+msgstr "il caso è gestito da un inquilino non gestito"
 
 #, elixir-autogen, icu-format
 msgid "The contact person didn't develop any symptoms during quarantine"
@@ -5378,6 +5607,10 @@ msgid "The link to the possible index submissions was sent. The Index did not en
 msgstr "Il link alle presentazioni di indici presunti è stato inviato. L'indice non ha ancora inserito i presunti indici. Questo può essere controllato sotto {link}."
 
 #, elixir-autogen, icu-format
+msgid "the person does not have contact methods"
+msgstr "la persona non ha metodi di contatto"
+
+#, elixir-autogen, icu-format
 msgid "The person is suspected of having contracted a variant in consideration"
 msgstr "La persona è sospettata di aver contratto una variante in esame"
 
@@ -5408,6 +5641,10 @@ msgstr "Lo stato serve come una panoramica della fase di rintracciamento attuale
 #, elixir-autogen, icu-format
 msgid "The swiss covid app is the official contact tracing app of switzerland. The app helps to trace and prevent the spread of the COVID-19 virus."
 msgstr "L'app swiss covid è l'app ufficiale per il tracciamento dei contatti della svizzera. L'app aiuta a tracciare e prevenire la diffusione del virus COVID-19."
+
+#, elixir-autogen, icu-format
+msgid "the transmission type is not \"contact person\""
+msgstr "il tipo di trasmissione non è \"persona di contatto\""
 
 #, elixir-autogen, icu-format
 msgid "There was an error while submitting the form. Please try resubmitting the form again and contact your administrator if the problem persists."
@@ -5610,6 +5847,14 @@ msgid "Transmission"
 msgstr "Trasmissione"
 
 #, elixir-autogen, icu-format
+msgid "Transmission countries"
+msgstr "Paesi di trasmissione"
+
+#, elixir-autogen, icu-format
+msgid "Transmission created successfully"
+msgstr "Trasmissione creata con successo"
+
+#, elixir-autogen, icu-format
 msgid "Transmission Date"
 msgstr "Data di trasmissione"
 
@@ -5617,14 +5862,6 @@ msgstr "Data di trasmissione"
 msgctxt "Elixir.Hygeia.CaseContext.PossibleIndexSubmission Field"
 msgid "Transmission Date"
 msgstr "Data di trasmissione"
-
-#, elixir-autogen, icu-format
-msgid "Transmission countries"
-msgstr "Paesi di trasmissione"
-
-#, elixir-autogen, icu-format
-msgid "Transmission created successfully"
-msgstr "Trasmissione creata con successo"
 
 #, elixir-autogen, icu-format
 msgid "Transmission deleted successfully"
@@ -5637,6 +5874,11 @@ msgstr "Trasmissione aggiornata con successo"
 #, elixir-autogen, icu-format
 msgid "Transmissions"
 msgstr "Trasmissioni"
+
+#, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "transmissions"
+msgstr "trasmissioni"
 
 #, elixir-autogen, icu-format
 msgctxt "Auto Tracing Step"
@@ -5712,6 +5954,11 @@ msgid "Type"
 msgstr "Tipo"
 
 #, elixir-autogen, icu-format
+msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
+msgid "Type name"
+msgstr "Nome del tipo"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Transmission.InfectionPlace Field"
 msgid "Type Other"
 msgstr "Tipo Altro"
@@ -5720,24 +5967,6 @@ msgstr "Tipo Altro"
 msgctxt "Elixir.Hygeia.OrganisationContext.Organisation Field"
 msgid "Type Other"
 msgstr "Tipo Altro"
-
-#, elixir-autogen, icu-format
-msgctxt "Elixir.Hygeia.CaseContext.ExternalReference Field"
-msgid "Type name"
-msgstr "Nome del tipo"
-
-#, elixir-autogen, icu-format
-msgid "UTF-8"
-msgstr "UTF-8"
-
-#, elixir-autogen, icu-format
-msgid "UUID"
-msgstr "UUID"
-
-#, elixir-autogen, icu-format
-msgctxt "Field"
-msgid "UUID"
-msgstr "UUID"
 
 #, elixir-autogen, icu-format
 msgctxt "Import Helpers"
@@ -5773,8 +6002,8 @@ msgid "Unknown"
 msgstr "Sconosciuto"
 
 #, elixir-autogen, icu-format
-msgid "Unknown Error"
-msgstr "Errore sconosciuto"
+msgid "unknown"
+msgstr "sconosciuto"
 
 #, elixir-autogen, icu-format
 msgid "Unknown division"
@@ -5784,6 +6013,10 @@ msgstr "Classe / divisione sconosciuta"
 msgctxt "Elixir.Hygeia.OrganisationContext.Visit Field"
 msgid "Unknown division"
 msgstr "Classe / divisione sconosciuta"
+
+#, elixir-autogen, icu-format
+msgid "Unknown Error"
+msgstr "Errore sconosciuto"
 
 #, elixir-autogen, icu-format
 msgid "Unknown organisation"
@@ -5798,6 +6031,16 @@ msgstr "Organizzazione sconosciuta"
 msgctxt "Auto Tracing Problem"
 msgid "Unmanaged Tenant"
 msgstr "Inquilino non gestito"
+
+#, elixir-autogen, icu-format
+msgctxt "Date Range"
+msgid "until"
+msgstr "fino a"
+
+#, elixir-autogen, icu-format
+msgctxt "versioning_event"
+msgid "update"
+msgstr "aggiorna"
 
 #, elixir-autogen, icu-format
 msgctxt "Inbox Row Patch Person"
@@ -5823,6 +6066,11 @@ msgid "User Sync"
 msgstr "Sincronizzazione utente"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "user_grants"
+msgstr "sovvenzioni_utente"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.TenantContext.Tenant.Smtp.Relay Field"
 msgid "Username"
 msgstr "Nome utente"
@@ -5832,8 +6080,26 @@ msgid "Users"
 msgstr "Utenti"
 
 #, elixir-autogen, icu-format
+msgctxt "Item Table"
+msgid "users"
+msgstr "utenti"
+
+#, elixir-autogen, icu-format
 msgid "Users can not be edited here since they are synchronized with the IAM."
 msgstr "Gli utenti non possono essere modificati qui poiché sono sincronizzati con la IAM."
+
+#, elixir-autogen, icu-format
+msgid "UTF-8"
+msgstr "UTF-8"
+
+#, elixir-autogen, icu-format
+msgid "UUID"
+msgstr "UUID"
+
+#, elixir-autogen, icu-format
+msgctxt "Field"
+msgid "UUID"
+msgstr "UUID"
 
 #, elixir-autogen, icu-format
 msgid "Vacation"
@@ -5904,12 +6170,12 @@ msgid "Vaccination 4th Jab Name"
 msgstr "Vaccinazione"
 
 #, elixir-autogen, icu-format
-msgid "Vaccination Failures"
-msgstr "Vaccinazioni fallite"
-
-#, elixir-autogen, icu-format
 msgid "Vaccination breakthroughs"
 msgstr "Vaccinazione"
+
+#, elixir-autogen, icu-format
+msgid "Vaccination Failures"
+msgstr "Vaccinazioni fallite"
 
 #, elixir-autogen, icu-format
 msgctxt "Elixir.HygeiaWeb.AutoTracingLive.Vaccination Field"
@@ -6019,6 +6285,11 @@ msgid "Warning! When importing the same rows multiple times, they will be re-ass
 msgstr "Attenzione! Quando si importano le stesse righe più volte, esse saranno riassegnate dall'importazione precedente a quella corrente. Pertanto le righe potrebbero apparire mancanti da un'importazione in seguito."
 
 #, elixir-autogen, icu-format
+msgctxt "Notification"
+msgid "was assigned to you."
+msgstr "è stato assegnato a te."
+
+#, elixir-autogen, icu-format
 msgid "We wish you a speedy recovery."
 msgstr "Le auguriamo una pronta guarigione."
 
@@ -6044,11 +6315,6 @@ msgid "What symptoms do/did you experience?"
 msgstr "Quali sintomi ha riscontrato?"
 
 #, elixir-autogen, icu-format
-msgctxt "Phase Create Modal"
-msgid "When Saving, the following changes will also be applied:"
-msgstr "Quando si salva, vengono applicate anche le seguenti modifiche:"
-
-#, elixir-autogen, icu-format
 msgid "When did the symptoms start?"
 msgstr "Quando sono iniziati i sintomi?"
 
@@ -6059,6 +6325,11 @@ msgstr "Quando hai incontrato {first_name} {last_name} per ultimo?"
 #, elixir-autogen, icu-format
 msgid "When premature release permission is denied it means that the person will not be allowed to end the quarantine prematurely. You must provide a reason for disabling the premature release."
 msgstr "Quando il permesso di rilascio anticipato dalla quarantena viene negato significa che alla persona non sarà permesso di terminare la quarantena prematuramente. È necessario fornire un motivo per disabilitare il rilascio anticipato."
+
+#, elixir-autogen, icu-format
+msgctxt "Phase Create Modal"
+msgid "When Saving, the following changes will also be applied:"
+msgstr "Quando si salva, vengono applicate anche le seguenti modifiche:"
 
 #, elixir-autogen, icu-format
 msgid "Where did you meet {first_name} {last_name} last?"
@@ -6188,10 +6459,6 @@ msgid "You've been tested positive for covid and recovered less than four months
 msgstr "Sei risultato positivo al test per il covid e sei guarito meno di quattro mesi fa."
 
 #, elixir-autogen, icu-format
-msgid "Your Tests"
-msgstr "I tuoi test"
-
-#, elixir-autogen, icu-format
 msgid "Your institution does not appear in the list or it is not correct? Please enter it manually."
 msgstr "La tua occupazione non appare nella lista o non è corretta? Per favore, inseriscila manualmente."
 
@@ -6208,6 +6475,10 @@ msgid "Your quarantine started on {start_date} and applies up to and including {
 msgstr "La tua quarantena è iniziata il {start_date} e si applica fino al {end_date} compreso."
 
 #, elixir-autogen, icu-format
+msgid "Your Tests"
+msgstr "I tuoi test"
+
+#, elixir-autogen, icu-format
 msgctxt "Elixir.Hygeia.CaseContext.Address Field"
 msgid "ZIP"
 msgstr "ZIP"
@@ -6215,277 +6486,6 @@ msgstr "ZIP"
 #, elixir-autogen, icu-format
 msgid "Zoos, animal parks, gardens"
 msgstr "Zoo, parchi animali, giardini"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "affiliations"
-msgstr "affiliazioni"
-
-#, elixir-autogen, icu-format
-msgid "all subdivisions"
-msgstr "tutte le suddivisioni"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification Tray"
-msgid "and {count} more"
-msgstr "e {count} in più"
-
-#, elixir-autogen, icu-format
-msgid "another place"
-msgstr "un altro posto"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "auto_tracings"
-msgstr "tracciamenti_automatici"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "cases"
-msgstr "casi"
-
-#, elixir-autogen, icu-format
-msgid "choose"
-msgstr "scegliere"
-
-#, elixir-autogen, icu-format
-msgctxt "versioning_event"
-msgid "delete"
-msgstr "rimuovi"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "delete all"
-msgstr "cancella tutti"
-
-#, elixir-autogen, icu-format
-msgid "deleted"
-msgstr "cancellato"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "deleted"
-msgstr "cancellato"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "divisions"
-msgstr "sezioni"
-
-#, elixir-autogen, icu-format
-msgid "either an existing organisation, an unknown organisation or a comment must be filled"
-msgstr "inserisci un'organizzazione esistente, una nuova organizzazione oppure un commento"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "emails"
-msgstr "e-mail"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "failed to send email."
-msgstr "non è riuscito a inviare l'e-mail."
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "has declared a premature release."
-msgstr "ha dichiarato un rilascio prematuro."
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "hospitalizations"
-msgstr "ricoveri"
-
-#, elixir-autogen, icu-format
-msgid "https://www.apple.com/safari/"
-msgstr "https://www.apple.com/safari/"
-
-#, elixir-autogen, icu-format
-msgid "https://www.google.com/chrome/"
-msgstr "https://www.google.com/chrome/"
-
-#, elixir-autogen, icu-format
-msgid "https://www.microsoft.com/en-us/edge"
-msgstr "https://www.microsoft.com/en-us/edge"
-
-#, elixir-autogen, icu-format
-msgid "https://www.mozilla.org/en-US/firefox/new/"
-msgstr "https://www.mozilla.org/en-US/firefox/new/"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "import_rows"
-msgstr "import_rows"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "imports"
-msgstr "importazioni"
-
-#, elixir-autogen, icu-format
-msgctxt "versioning_event"
-msgid "insert"
-msgstr "inserire"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "mark all as read"
-msgstr "segna tutti come letti"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "mutations"
-msgstr "mutazioni"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "needs help with self-service."
-msgstr "ha bisogno di aiuto con il self-service."
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "notes"
-msgstr "note"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "notifications"
-msgstr "notifiche"
-
-#, elixir-autogen, icu-format
-msgid "on \"From\" day"
-msgstr "il giorno \"Da\""
-
-#, elixir-autogen, icu-format
-msgid "or"
-msgstr "o"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "organisations"
-msgstr "organizzazioni"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "people"
-msgstr "persone"
-
-#, elixir-autogen, icu-format
-msgid "please add at least one educational institution that you visited during the period in consideration"
-msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
-
-#, elixir-autogen, icu-format
-msgid "please add at least one flight that you took during the period in consideration"
-msgstr "aggiungi almento un instituto d'istruzione che hai visitato durante il periodo in considerazione"
-
-#, elixir-autogen, icu-format
-msgid "please add at least one occupation"
-msgstr "si prega di aggiungere almeno un'occupazione"
-
-#, elixir-autogen, icu-format
-msgid "please fill in the information about the place where you contracted the virus"
-msgstr "inserisci il luogo dove hai contratto il virus"
-
-#, elixir-autogen, icu-format
-msgid "please fill in the information of the person who passed on the virus to you"
-msgstr "inserisci le informazioni della persona che ti ha trasmesso il virus"
-
-#, elixir-autogen, icu-format
-msgid "please provide the information about your travel"
-msgstr "per favore fornisci le informazioni sul tuo viaggio"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "possible index submitted."
-msgstr "possibile indice presentato."
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "premature_releases"
-msgstr "rilasci_precoci"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "sedex_exports"
-msgstr "sedex_exports"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "sms"
-msgstr "sms"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "system_messages"
-msgstr "messaggi di sistema"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "tenants"
-msgstr "inquilini"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "tests"
-msgstr "test"
-
-#, elixir-autogen, icu-format
-msgid "the assigned tenant has not configured email notifications"
-msgstr "l'inquilino assegnato non ha configurato le notifiche e-mail"
-
-#, elixir-autogen, icu-format
-msgid "the assigned tenant has not configured sms notifications"
-msgstr "l'inquilino assegnato non ha configurato le notifiche sms"
-
-#, elixir-autogen, icu-format
-msgid "the case contains an index phase"
-msgstr "il caso contiene una fase indice"
-
-#, elixir-autogen, icu-format
-msgid "the case is managed by an unmanaged tenant"
-msgstr "il caso è gestito da un inquilino non gestito"
-
-#, elixir-autogen, icu-format
-msgid "the person does not have contact methods"
-msgstr "la persona non ha metodi di contatto"
-
-#, elixir-autogen, icu-format
-msgid "the transmission type is not \"contact person\""
-msgstr "il tipo di trasmissione non è \"persona di contatto\""
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "transmissions"
-msgstr "trasmissioni"
-
-#, elixir-autogen, icu-format
-msgid "unknown"
-msgstr "sconosciuto"
-
-#, elixir-autogen, icu-format
-msgctxt "Date Range"
-msgid "until"
-msgstr "fino a"
-
-#, elixir-autogen, icu-format
-msgctxt "versioning_event"
-msgid "update"
-msgstr "aggiorna"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "user_grants"
-msgstr "sovvenzioni_utente"
-
-#, elixir-autogen, icu-format
-msgctxt "Item Table"
-msgid "users"
-msgstr "utenti"
-
-#, elixir-autogen, icu-format
-msgctxt "Notification"
-msgid "was assigned to you."
-msgstr "è stato assegnato a te."
 
 #, ex-autogen, icu-format
 msgid "{count} New Notification"

@@ -14,7 +14,7 @@ defmodule Hygeia.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
-      gettext: [write_reference_comments: false, sort_by_msgid: true],
+      gettext: [write_reference_comments: false, sort_by_msgid: :case_insensitive],
       build_embedded: Mix.env() == :prod or System.get_env("BUILD_EMBEDDED") in ["1", "true"],
       test_coverage: [tool: ExCoveralls],
       dialyzer:
