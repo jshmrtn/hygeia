@@ -921,22 +921,35 @@ defmodule HygeiaWeb.CaseLiveTest do
       })
       |> test_next_button(context, %{to_step: "summary"})
 
-      assert [
-               %Person{
-                 uuid: propagator_uuid,
-                 first_name: ^first_name_propagator,
-                 last_name: ^last_name_propagator
-               },
-               %Person{
-                 uuid: person_uuid,
-                 first_name: ^first_name_person,
-                 last_name: ^last_name_person,
-                 contact_methods: [
-                   %{type: :mobile, value: ^mobile},
-                   %{type: :email, value: ^email}
-                 ]
-               }
-             ] = CaseContext.list_people()
+      assert [_one, _two] = people = CaseContext.list_people()
+
+      assert %Person{uuid: propagator_uuid} =
+               Enum.find(
+                 people,
+                 &match?(
+                   %Person{
+                     first_name: ^first_name_propagator,
+                     last_name: ^last_name_propagator
+                   },
+                   &1
+                 )
+               )
+
+      assert %Person{uuid: person_uuid} =
+               Enum.find(
+                 people,
+                 &match?(
+                   %Person{
+                     first_name: ^first_name_person,
+                     last_name: ^last_name_person,
+                     contact_methods: [
+                       %{type: :mobile, value: ^mobile},
+                       %{type: :email, value: ^email}
+                     ]
+                   },
+                   &1
+                 )
+               )
 
       {start_date, end_date} = Service.phase_dates(date)
 
