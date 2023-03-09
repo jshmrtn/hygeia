@@ -16,6 +16,10 @@ defmodule Hygeia.Jobs.Anonymization do
     _env -> @default_refresh_interval_ms :timer.minutes(30)
   end
 
+  {threshold_amount, threshold_unit} = Application.compile_env!(:hygeia, [__MODULE__, :threshold])
+  @threshold_amount threshold_amount
+  @threshold_unit threshold_unit
+
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
     do:
@@ -45,11 +49,14 @@ defmodule Hygeia.Jobs.Anonymization do
 
   def handle_info(:execute, _params) do
     {:ok, n_cases} =
-      anonymize(CaseContext.list_cases_for_anonymization_query(), &CaseContext.anonymize_case/1)
+      anonymize(
+        CaseContext.list_cases_for_anonymization_query({@threshold_amount, @threshold_unit}),
+        &CaseContext.anonymize_case/1
+      )
 
     {:ok, n_people} =
       anonymize(
-        CaseContext.list_people_for_anonymization_query(),
+        CaseContext.list_people_for_anonymization_query({@threshold_amount, @threshold_unit}),
         &CaseContext.anonymize_person/1
       )
 

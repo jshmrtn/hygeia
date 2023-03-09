@@ -228,26 +228,32 @@ defmodule Hygeia.CaseContext do
         )
       )
 
-  @spec list_people_for_anonymization_query :: Ecto.Query.t()
-  def list_people_for_anonymization_query,
+  @spec list_people_for_anonymization_query(
+          {threshold_amount :: non_neg_integer(), threshold_unit :: String.t()}
+        ) :: Ecto.Query.t()
+  def list_people_for_anonymization_query({threshold_amount, threshold_unit}),
     do:
       from(person in Person,
         left_join: case in assoc(person, :cases),
         on: not case.anonymized,
         where:
           not person.anonymized and
-            coalesce(person.reidentification_date, person.inserted_at) < ago(2, "year"),
+            coalesce(person.reidentification_date, person.inserted_at) <
+              ago(^threshold_amount, ^threshold_unit),
         group_by: person.uuid,
         having: count(case.uuid) < 1
       )
 
-  @spec list_cases_for_anonymization_query :: Ecto.Query.t()
-  def list_cases_for_anonymization_query,
+  @spec list_cases_for_anonymization_query(
+          {threshold_amount :: non_neg_integer(), threshold_unit :: String.t()}
+        ) :: Ecto.Query.t()
+  def list_cases_for_anonymization_query({threshold_amount, threshold_unit}),
     do:
       from(case in Case,
         where:
           not case.anonymized and
-            coalesce(case.reidentification_date, case.inserted_at) < ago(2, "year")
+            coalesce(case.reidentification_date, case.inserted_at) <
+              ago(^threshold_amount, ^threshold_unit)
       )
 
   @spec fulltext_person_search(query :: String.t(), limit :: pos_integer()) :: [Person.t()]

@@ -92,6 +92,11 @@ config :hygeia, Hygeia.AutoTracingContext.AutoTracingCommunication,
 config :ex_cldr,
   default_backend: HygeiaCldr
 
+# Temporarily lower threshold from 2 years to 1 month
+# TODO: Change back before going into full production mode again
+config :hygeia, Hygeia.Jobs.DataPruning, threshold: {1, "month"}
+config :hygeia, Hygeia.Jobs.Anonymization, threshold: {1, "month"}
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

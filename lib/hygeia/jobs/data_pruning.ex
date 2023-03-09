@@ -10,6 +10,10 @@ defmodule Hygeia.Jobs.DataPruning do
 
   @default_refresh_interval_ms :timer.hours(1)
 
+  {threshold_amount, threshold_unit} = Application.compile_env!(:hygeia, [__MODULE__, :threshold])
+  @threshold_amount threshold_amount
+  @threshold_unit threshold_unit
+
   @spec start_link(otps :: Keyword.t()) :: GenServer.on_start()
   def start_link(opts),
     do:
@@ -52,7 +56,8 @@ defmodule Hygeia.Jobs.DataPruning do
   defp execute_prune(:resource_view),
     do:
       Repo.delete_all(
-        from resource_view in "resource_views", where: resource_view.time < ago(2, "year")
+        from resource_view in "resource_views",
+          where: resource_view.time < ago(^@threshold_amount, ^@threshold_unit)
       )
 
   defp execute_prune(:inbox) do
@@ -60,7 +65,9 @@ defmodule Hygeia.Jobs.DataPruning do
       Ecto.Multi.new()
       |> Ecto.Multi.delete_all(
         :delete,
-        from(import_row in "import_rows", where: import_row.inserted_at < ago(2, "year"))
+        from(import_row in "import_rows",
+          where: import_row.inserted_at < ago(^@threshold_amount, ^@threshold_unit)
+        )
       )
       |> Versioning.authenticate_multi()
       |> Hygeia.Repo.transaction(timeout: :infinity)
@@ -75,7 +82,7 @@ defmodule Hygeia.Jobs.DataPruning do
         :delete,
         from(version in "versions",
           where:
-            version.inserted_at < ago(2, "year") and
+            version.inserted_at < ago(^@threshold_amount, ^@threshold_unit) and
               version.item_table not in [
                 "cases",
                 "people",
@@ -99,7 +106,7 @@ defmodule Hygeia.Jobs.DataPruning do
         :update,
         from(version in "versions",
           where:
-            version.inserted_at < ago(2, "year") and
+            version.inserted_at < ago(^@threshold_amount, ^@threshold_unit) and
               version.item_table in [
                 "cases",
                 "people",
