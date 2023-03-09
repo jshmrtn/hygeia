@@ -376,7 +376,8 @@ defmodule Hygeia.CaseContextTest do
       # person7 - anonymized, old, case anonymized
 
       assert ["person1", "person3", "person5"] ==
-               CaseContext.list_people_for_anonymization_query()
+               {2, "year"}
+               |> CaseContext.list_people_for_anonymization_query()
                |> Repo.all()
                |> Enum.map(& &1.first_name)
                |> Enum.sort()
