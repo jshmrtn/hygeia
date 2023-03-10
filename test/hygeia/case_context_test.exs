@@ -830,6 +830,8 @@ defmodule Hygeia.CaseContextTest do
         }
       })
 
+      possible_index_submission_fixture(case_main, %{})
+
       assert %Case{
                uuid: ^case_main_uuid,
                notes: [%Note{}],
@@ -877,6 +879,7 @@ defmodule Hygeia.CaseContextTest do
                    }
                  }
                ],
+               possible_index_submissions: [_submission],
                anonymized: false,
                anonymization_date: nil
              } =
@@ -888,7 +891,8 @@ defmodule Hygeia.CaseContextTest do
                  :auto_tracing,
                  :received_transmissions,
                  :propagated_transmissions,
-                 :tests
+                 :tests,
+                 :possible_index_submissions
                ])
 
       assert {:ok, anonymized_case} = CaseContext.anonymize_case(case_main)
@@ -936,6 +940,7 @@ defmodule Hygeia.CaseContextTest do
                    }
                  }
                ],
+               possible_index_submissions: [],
                anonymized: true,
                anonymization_date: ^today
              } =
@@ -947,7 +952,8 @@ defmodule Hygeia.CaseContextTest do
                  :auto_tracing,
                  :received_transmissions,
                  :propagated_transmissions,
-                 :tests
+                 :tests,
+                 :possible_index_submissions
                ])
     end
 
