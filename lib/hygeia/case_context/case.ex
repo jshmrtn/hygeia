@@ -138,7 +138,10 @@ defmodule Hygeia.CaseContext.Case do
       foreign_key: :propagator_case_uuid,
       on_replace: :delete
 
-    has_many :possible_index_submissions, PossibleIndexSubmission, foreign_key: :case_uuid
+    has_many :possible_index_submissions, PossibleIndexSubmission,
+      foreign_key: :case_uuid,
+      on_replace: :delete
+
     has_many :emails, Email, foreign_key: :case_uuid, on_replace: :delete
     has_many :sms, SMS, foreign_key: :case_uuid, on_replace: :delete
     has_many :notes, Note, foreign_key: :case_uuid, on_replace: :delete
@@ -207,6 +210,7 @@ defmodule Hygeia.CaseContext.Case do
     |> cast_assoc(:propagated_transmissions)
     |> cast_assoc(:sms)
     |> cast_assoc(:tests)
+    |> cast_assoc(:possible_index_submissions)
     |> validate_monitoring()
     |> cast_assoc(:notes)
     |> cast_embed(:phases, required: true)

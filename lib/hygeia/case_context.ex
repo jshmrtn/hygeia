@@ -2485,7 +2485,8 @@ defmodule Hygeia.CaseContext do
         :auto_tracing,
         :received_transmissions,
         :propagated_transmissions,
-        :tests
+        :tests,
+        :possible_index_submissions
       ])
 
     attrs = %{
@@ -2501,6 +2502,7 @@ defmodule Hygeia.CaseContext do
       tests: Anonymization.anonymize_test_params(case.tests),
       anonymized: true,
       anonymization_date: Date.utc_today(),
+      possible_index_submissions: [],
       monitoring: Anonymization.anonymize_monitoring_params(case.monitoring)
     }
 
