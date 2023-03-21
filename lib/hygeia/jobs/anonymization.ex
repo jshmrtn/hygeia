@@ -66,21 +66,23 @@ defmodule Hygeia.Jobs.Anonymization do
   end
 
   defp anonymize(query, anonymization_function) do
-    stream = Repo.stream(query, max_rows: 1000)
-
-    {:ok, length} =
+    {:ok, _length} =
       Repo.transaction(
         fn ->
-          anonymizations =
-            stream
-            |> Stream.each(anonymization_function)
-            |> Enum.to_list()
+          query
+          |> Repo.stream()
+          |> Task.async_stream(
+            fn entry ->
+              Versioning.put_originator(:noone)
+              Versioning.put_origin(:anonymization_job)
 
-          length(anonymizations)
+              anonymization_function.(entry)
+            end,
+            ordered: false
+          )
+          |> Enum.count()
         end,
         timeout: :infinity
       )
-
-    {:ok, length}
   end
 end
