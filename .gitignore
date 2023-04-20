@@ -52,3 +52,7 @@ lib/hygeia/ecto_type/country/*.hrl
 /assets/js/_hooks
 !/assets/js/_hooks/.gitkeep
 /assets/css/_components.css
+
+# Devcontainer
+.devcontainer/
+devcontainer/
