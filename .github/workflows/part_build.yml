@@ -30,7 +30,7 @@ jobs:
       otpVersion: "${{ env.OTP_VERSION }}"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "Read .tool-versions"
         id: toolVersions
         run: |
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: erlef/setup-elixir@v1
         id: setupBEAM
         with:
@@ -93,7 +93,7 @@ jobs:
       MIX_ENV: prod
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - run: |
           apt-get update -yqq
           apt-get install -yqq git
@@ -142,7 +142,7 @@ jobs:
     if: ${{ inputs.dockerBuild }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
           name: mix_release
