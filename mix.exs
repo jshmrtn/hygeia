@@ -117,7 +117,7 @@ defmodule Hygeia.MixProject do
       {:mime, "~> 1.5 or ~> 2.0"},
       {:mox, "~> 1.0", only: :test},
       {:nebulex, "~> 2.0-rc"},
-      {:oidcc, "~> 2.0.0-alpha"},
+      {:oidcc, "~> 3.1.1"},
       {:paginator, "~> 1.0"},
       {:pdf_generator, "~> 0.6.2"},
       {:phoenix, "~> 1.6"},
