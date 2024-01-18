@@ -54,7 +54,7 @@ jobs:
         with:
           version-file: '.tool-versions'
           version-type: strict
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: deps
           key: deps-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('mix.lock') }}
@@ -66,7 +66,7 @@ jobs:
         with:
           node-version-file: '.tool-versions'
       - run: npm config set cache $GITHUB_WORKSPACE/.ci-npm-cache
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: .ci-npm-cache
           key: deps-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-${{ hashFiles('assets/package-lock.json') }}
@@ -99,14 +99,14 @@ jobs:
           apt-get install -yqq git
           mix local.hex --force
           mix local.rebar --force
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: deps
           key: deps-docker-${{ env.MIX_ENV }}-${{ runner.os }}-${{ needs.detect_clean_versions.outputs.otpVersion }}-${{ needs.detect_clean_versions.outputs.elixirVersion }}-${{ hashFiles('mix.lock') }}
           restore-keys: |
             deps-docker-${{ env.MIX_ENV }}-${{ runner.os }}-${{ needs.detect_clean_versions.outputs.otpVersion }}-${{ needs.detect_clean_versions.outputs.elixirVersion }}-
       - run: mix deps.get
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: |
             _build/prod
