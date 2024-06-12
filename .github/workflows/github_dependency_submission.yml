@@ -1,0 +1,19 @@
+on:
+  push:
+    branches:
+      - "main"
+  # TODO: Remove
+  pull_request:
+
+name: "Dependency Submission"
+
+jobs:
+  report_mix_deps:
+    name: "Report Mix Dependencies"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # TODO: Stable Version
+      - uses: jshmrtn/mix-dependency-submission@v1.0.0-beta.1
+        with:
+          project-name: 'hygeia'
