@@ -61,7 +61,7 @@ jobs:
           restore-keys: |
             deps-${{ runner.os }}-${{ steps.setupBEAM.outputs.otp-version }}-${{ steps.setupBEAM.outputs.elixir-version }}-
       - run: mix deps.get
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         id: setupNode
         with:
           node-version-file: '.tool-versions'
